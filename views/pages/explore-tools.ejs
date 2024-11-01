@@ -1,0 +1,52 @@
+<div class="bg-gray-900 text-white min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Page Header -->
+    <h1 class="text-4xl font-extrabold mb-8 text-center">Our Tool Collection</h1>
+    <p class="text-gray-400 text-center mb-12">
+      Explore our range of tools, organized to help you achieve more in less time. Whether you're a student, content
+      creator, or business owner, we have tools to meet your needs.
+    </p>
+
+    <!-- Tools Categories & List -->
+    <% tools.forEach(tool=> { %>
+      <!-- Tool Category -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-4">
+          <%= tool.name.split('-').map(word=> word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+        </h2>
+
+        <!-- Tool Subcategories and Links -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <% tool.tools.forEach(subTool=> { %>
+            <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+              <% if (subTool.tools.length> 0) { %>
+                <!-- Nested Subcategory (if any) -->
+                <h3 class="text-lg font-semibold mb-2">
+                  <%= subTool.name.split('-').map(word=> word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                    %>
+                </h3>
+                <ul class="text-gray-400 space-y-2 pl-4">
+                  <% subTool.tools.forEach(innerTool=> { %>
+                    <li>
+                      <a href="/tools/<%= tool.name %>/<%= subTool.name %>/<%= innerTool.name %>"
+                        class="hover:text-white">
+                        <%= innerTool.name.charAt(0).toUpperCase() + innerTool.name.slice(1) %>
+                      </a>
+                    </li>
+                    <% }); %>
+                </ul>
+                <% } else { %>
+                  <!-- Direct Link if No Subcategory -->
+                  <a href="/tools/<%= tool.name %>/<%= subTool.name %>"
+                    class="block text-lg font-semibold text-white hover:text-gray-300">
+                    <%= subTool.name.split('-').map(word=> word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                      %>
+                  </a>
+                  <% } %>
+            </div>
+            <% }); %>
+        </div>
+      </div>
+      <% }); %>
+  </div>
+</div>

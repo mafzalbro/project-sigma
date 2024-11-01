@@ -1,0 +1,36 @@
+{
+  "name": "tools-site",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx nodemon app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "bcrypt": "^5.1.1",
+    "compression": "^1.7.5",
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "ejs-stream2": "^1.0.2",
+    "express": "^4.21.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.1",
+    "morgan": "^1.10.0",
+    "node-cache": "^5.1.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "postcss": "^8.4.47",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7",
+    "tailwindcss": "^3.4.14"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

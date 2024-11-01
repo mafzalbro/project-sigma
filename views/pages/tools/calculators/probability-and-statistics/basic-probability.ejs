@@ -1,0 +1,36 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Basic Probability</h1>
+  <p class="mb-4">This tool allows you to calculate the probability of a single event occurring.</p>
+  
+  <form id="probabilityForm" class="mb-4">
+    <div class="mb-4">
+      <label for="eventOutcomes" class="block text-sm font-medium">Number of favorable outcomes:</label>
+      <input type="number" id="eventOutcomes" name="eventOutcomes" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+    </div>
+    <div class="mb-4">
+      <label for="totalOutcomes" class="block text-sm font-medium">Total number of outcomes:</label>
+      <input type="number" id="totalOutcomes" name="totalOutcomes" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+    </div>
+    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Calculate Probability</button>
+  </form>
+
+  <div id="result" class="mt-4"></div>
+</div>
+
+<script>
+  document.getElementById('probabilityForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const eventOutcomes = parseInt(document.getElementById('eventOutcomes').value);
+    const totalOutcomes = parseInt(document.getElementById('totalOutcomes').value);
+    
+    if (totalOutcomes === 0) {
+      document.getElementById('result').innerHTML = '<p class="text-red-600">Total outcomes cannot be zero.</p>';
+      return;
+    }
+    
+    const probability = (eventOutcomes / totalOutcomes).toFixed(2);
+    document.getElementById('result').innerHTML = `<p>The probability of the event is: <strong>${probability}</strong></p>`;
+  });
+</script>
+

@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*{
+    font-family: "Poppins";
+    font-weight: 400 !important;
+}
+
+form input, form button {
+    background-color: black !important;
+    color: white !important;
+    border-radius: 100px !important;
+    border: 1px solid white !important;
+    padding: 12px 24px !important;
+    margin: 8px 0px !important;
+    transition: all 0.5s ease;
+}
+
+form button {
+    padding: 12px 36px !important;
+    margin: 4px !important
+}
+
+form label {
+    color: #fff !important;    
+}
+form button:hover {
+    background: #eee !important;
+    color: #333 !important;
+}

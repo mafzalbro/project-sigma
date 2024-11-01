@@ -1,0 +1,95 @@
+<aside class="md:w-64 md:h-screen md:overflow-y-auto border-r border-gray-600 px-1 bg-gray-900 sticky top-0">
+  <button onclick="toggleDropdown('dropdown')" class="flex justify-between w-full px-2 pt-2">
+    Tools
+    <svg class="w-4 h-4 ml-2 transition-transform duration-200" id="dropdown-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+    </svg>
+  </button>
+  <ul class="text-white p-1">
+    <li>
+      <ul class="border-l mt-2 hidden md:block absolute md:relative w-full p-3 bg-gray-900 md:bg-none" id="dropdown">
+        <% tools.forEach(tool => { %>
+          <% if (tool.tools.length > 0) { %>
+            <li class="relative">
+              <button class="flex items-center justify-between w-full py-2 text-left focus:outline-none"
+                onclick="toggleDropdown('<%= tool.name %>')">
+                <span class="flex-1">
+                  <%= tool.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+                </span>
+                <svg class="w-4 h-4 ml-2 transition-transform duration-200" id="<%= tool.name %>-icon"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <ul id="<%= tool.name %>" class="border-l pl-2 hidden md:block mt-2">
+                <% tool.tools.forEach(subTool => { %>
+                  <li>
+                    <% if (subTool.tools.length > 0) { %>
+                      <button class="flex items-center justify-between w-full py-2 text-left focus:outline-none"
+                        onclick="toggleDropdown('<%= tool.name %>-<%= subTool.name %>')">
+                        <span class="flex-1">
+                          <%= subTool.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+                        </span>
+                        <svg class="w-4 h-4 ml-2 transition-transform duration-200"
+                          id="<%= tool.name %>-<%= subTool.name %>-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                          viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+                        </svg>
+                      </button>
+                      <ul id="<%= tool.name %>-<%= subTool.name %>" class="border-l hidden md:block mt-2">
+                        <% subTool.tools.forEach(innerTool => { %>
+                          <li>
+                            <a href="/tools/<%= tool.name %>/<%= subTool.name %>/<%= innerTool.name %>"
+                              class="block py-2 pl-4 <%= (innerTool.name === currentInnerTool) ? 'text-blue-300 underline underline-offset-4' : '' %>">
+                              <%= innerTool.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+                            </a>
+                          </li>
+                        <% }); %>
+                      </ul>
+                    <% } else { %>
+                      <a href="/tools/<%= tool.name %>/<%= subTool.name %>" class="block py-2 <%= (subTool.name === currentSubTool) ? 'text-blue-300 underline underline-offset-4' : '' %>">
+                        <%= subTool.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+                      </a>
+                    <% } %>
+                  </li>
+                <% }); %>
+              </ul>
+            </li>
+          <% } else { %>
+            <li>
+              <a href="/tools/<%= tool.name %>" class="block py-2 pl-2 <%= (tool.name === currentTool) ? 'text-blue-300' : '' %>">
+                <%= tool.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+              </a>
+            </li>
+          <% } %>
+        <% }); %>
+      </ul>
+    </li>
+  </ul>
+</aside>
+
+<script>
+  // Toggle dropdown visibility and rotate icon
+  function toggleDropdown(toolName) {
+    const dropdown = document.getElementById(toolName);
+    const icon = document.getElementById(`${toolName}-icon`);
+
+    if (dropdown) {
+      if (dropdown.classList.contains('md:block')) {
+        dropdown.classList.remove('md:block')
+        dropdown.classList.add('md:hidden')
+      } else {
+        dropdown.classList.add('md:block')
+        dropdown.classList.remove('md:hidden')
+      }
+      dropdown.classList.toggle('hidden');
+      icon.classList.toggle('rotate-180'); // Rotate the icon
+    }
+  }
+</script>
+
+<style>
+  .rotate-180 {
+    transform: rotate(180deg);
+  }
+</style>

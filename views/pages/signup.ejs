@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="/css/tailwind.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Signup</h1>
+    <% if (error.length > 0) { %>
+      <div class="bg-red-500 text-white p-4 mb-4"><%= error %></div>
+    <% } %>
+    <form action="/signup" method="POST">
+      <div class="mb-4">
+        <label for="username" class="block text-gray-700">Username</label>
+        <input type="text" name="username" id="username" class="border rounded p-2 w-full" required>
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-gray-700">Password</label>
+        <input type="password" name="password" id="password" class="border rounded p-2 w-full" required>
+      </div>
+      <button type="submit" class="bg-blue-500 text-white p-2 rounded">Signup</button>
+    </form>
+  </div>
+</body>
+</html>

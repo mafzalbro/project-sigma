@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+  <link href="/css/tailwind.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <meta name="description" content="A dynamic website with SEO enhancements.">
+  <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "<%= title %>",
+          "description": "Description specific to this page."
+        }
+    </script>
+</head>
+
+<body class="bg-black text-gray-200 flex flex-col">
+
+  <%- include('../partials/navbar') %>
+
+    <div class="flex flex-1 flex-col md:flex-row">
+      <!-- Sidebar -->
+        <%- include('../partials/sidebar') %>
+      </aside>
+      <!-- Main Content -->
+      <main class="container mx-auto">
+        <%- body %>
+      </main>
+    </div>
+
+    <%- include('../partials/footer') %>
+
+</body>
+
+</html>

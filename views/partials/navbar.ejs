@@ -1,0 +1,15 @@
+<!-- views/partials/navbar.ejs -->
+<nav class="bg-gray-900 text-white p-4">
+  <a href="/" class="mr-4">Home</a>
+  <a href="/about" class="mr-4">About</a>
+  <a href="/contact" class="mr-4">Contact</a>
+  <a href="/tools" class="mr-4">Tools</a>
+  
+  <% if (user) { %>
+      <span class="mr-4">Hello, <%= user.username %></span>
+      <a href="/logout" class="mr-4">Logout</a>
+  <% } else { %>
+      <a href="/login" class="mr-4">Login</a>
+      <a href="/signup" class="mr-4">Signup</a>
+  <% } %>
+</nav>
