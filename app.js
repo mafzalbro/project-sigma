@@ -9,6 +9,7 @@ const flash = require("connect-flash");
 const { sequelize, User } = require("./db");
 const morgan = require("morgan");
 const NodeCache = require("node-cache");
+const ejs = require("ejs"); // Import EJS
 
 const app = express();
 const port = 3000;
@@ -34,11 +35,9 @@ app.use(
 );
 
 // Middleware to load tools globally
-// Middleware to load tools globally
 app.use((req, res, next) => {
   const toolsDir = path.join(__dirname, "views", "pages", "tools");
 
-  // Function to recursively read directory and its subdirectories
   const getTools = (dir) => {
     const tools = [];
     const files = fs.readdirSync(dir);
@@ -48,10 +47,8 @@ app.use((req, res, next) => {
       const stat = fs.statSync(fullPath);
 
       if (stat.isDirectory()) {
-        // If it's a directory, recursively get tools from it
         tools.push({ name: file, tools: getTools(fullPath) });
       } else if (file.endsWith(".ejs")) {
-        // If it's an EJS file, add it as a tool
         tools.push({ name: file.replace(".ejs", ""), tools: [] });
       }
     });
@@ -59,20 +56,17 @@ app.use((req, res, next) => {
     return tools;
   };
 
-  // Load all tools and sub-tools
   const tools = getTools(toolsDir);
-  res.locals.tools = tools; // Load tools globally
-  res.locals.user = req.user; // Load user globally
+  res.locals.tools = tools;
+  res.locals.user = req.user;
 
-  // Extract the current tool and sub-tool from the request path
-  const toolPath = req.path.split('/').filter(Boolean); // Split path and filter out empty elements
-  res.locals.currentTool = toolPath[1] || null; // Tool name
-  res.locals.currentSubTool = toolPath[2] || null; // Sub-tool name
-  res.locals.currentInnerTool = toolPath[3] || null; // Inner tool name
+  const toolPath = req.path.split('/').filter(Boolean);
+  res.locals.currentTool = toolPath[1] || null;
+  res.locals.currentSubTool = toolPath[2] || null;
+  res.locals.currentInnerTool = toolPath[3] || null;
 
   next();
 });
-
 
 // Passport middleware
 app.use(passport.initialize());
@@ -94,24 +88,23 @@ app.get("/robots.txt", (req, res) => {
 
 // Middleware to cache responses for the main pages
 const cacheMiddleware = (req, res, next) => {
-  // return next();
-  const key = req.originalUrl; // Use the original URL as the cache key
+  const key = req.originalUrl; 
   const noCacheUrls = ["/login", "/signup"];
   if (noCacheUrls.some((url) => url.includes(key))) {
     cache.flushAll()
   }
 
-  const cachedResponse = cache.get(key); // Get the cached response
+  const cachedResponse = cache.get(key); 
   console.log("serving from cache", key);
 
   if (cachedResponse) {
-    return res.send(cachedResponse); // If cached, send the cached response
+    return res.send(cachedResponse); 
   }
 
-  res.sendResponse = res.send; // Store original send function
+  res.sendResponse = res.send; 
   res.send = (body) => {
-    cache.set(key, body); // Cache the response
-    res.sendResponse(body); // Send the response
+    cache.set(key, body);
+    res.sendResponse(body); 
   };
 
   next();
@@ -131,33 +124,27 @@ app.get("/tools", cacheMiddleware, (req, res) =>
   res.render("pages/explore-tools", { title: "Explore Tools", user: req.user })
 );
 
-// Dynamic Tools page with slug
 // Dynamic Tools page with up to 4 levels of subpaths
 app.get(
   "/tools/:level1/:level2?/:level3?/:level4?", 
   cacheMiddleware, 
   (req, res) => {
-    // Capture path segments dynamically
     const { level1, level2, level3, level4 } = req.params;
 
-    // Construct the tool path by joining available path segments
     const toolPathSegments = [level1, level2, level3, level4].filter(Boolean);
     const toolPath = toolPathSegments.join('/');
-    const toolPage = `pages/tools/${toolPath}`; // Construct the path for the tool page
+    const toolPage = `pages/tools/${toolPath}`;
 
-    // Check if the tool page exists
     if (fs.existsSync(path.join(__dirname, "views", toolPage + ".ejs"))) {
       res.render(toolPage, {
-        title: `Tool - ${toolPathSegments[toolPathSegments.length - 1].replace(/-/g, " ")}`, // Title based on the last segment
+        title: `Tool - ${toolPathSegments[toolPathSegments.length - 1].replace(/-/g, " ")}`,
         user: req.user,
       });
     } else {
-      // Redirect to 404 page if the tool page does not exist
       res.status(404).render("pages/404", { title: "404 Not Found" });
     }
   }
 );
-
 
 // Signup routes
 app.get("/signup", (req, res) => {
