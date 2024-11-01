@@ -94,7 +94,7 @@ app.get("/robots.txt", (req, res) => {
 
 // Middleware to cache responses for the main pages
 const cacheMiddleware = (req, res, next) => {
-  return next();
+  // return next();
   const key = req.originalUrl; // Use the original URL as the cache key
   const noCacheUrls = ["/login", "/signup"];
   if (noCacheUrls.some((url) => url.includes(key))) {
